@@ -2,9 +2,13 @@ package org.example;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
 
 public class DisplayResponse {
-
+    /**
+     Display search results for a given Wikipedia topic
+     @param responseBody the JSON response from the Wikipedia API
+     */
     public void display(String responseBody) {
         // Parse the JSON response to extract search results
         JSONObject json = new JSONObject(responseBody);
@@ -17,12 +21,7 @@ public class DisplayResponse {
             String snippet = result.getString("snippet");
 
             // Format the snippet for easy reading
-            snippet = snippet.replaceAll("<[^>]*>", ""); // Remove HTML tags
-            snippet = snippet.replaceAll("\\s+", " "); // Replace multiple spaces with a single space
-            snippet = snippet.replaceAll("&quot;", "\""); // Replace HTML entity for double quote
-            snippet = snippet.replaceAll("&amp;", "&"); // Replace HTML entity for ampersand
-            snippet = snippet.replaceAll("&lt;", "<"); // Replace HTML entity for less-than
-            snippet = snippet.replaceAll("&gt;", ">"); // Replace HTML entity for greater-than
+            snippet = Jsoup.parse(snippet).text();
 
             // Print the result with formatted snippet
             System.out.println("Title: " + title);
